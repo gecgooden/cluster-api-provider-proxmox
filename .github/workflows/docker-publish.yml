@@ -6,6 +6,7 @@ name: Docker
 # documentation.
 
 on:
+  pull_request:
   push:
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
