@@ -2,7 +2,7 @@ module github.com/k8s-proxmox/cluster-api-provider-proxmox
 
 go 1.19
 
-replace github.com/k8s-proxmox/proxmox-go v0.0.0-alpha25 => github.com/gecgooden/proxmox-go v0.0.0-20240408145305-aeecb94d8bf9
+replace github.com/k8s-proxmox/proxmox-go v0.0.0-alpha25 => github.com/gecgooden/proxmox-go v0.0.0-20240408145305-49fbf7c5a737
 
 require (
 	github.com/go-logr/logr v1.3.0
