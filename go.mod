@@ -1,7 +1,8 @@
 module github.com/k8s-proxmox/cluster-api-provider-proxmox
 
 go 1.19
-replace github.com/k8s-proxmox/proxmox-go v0.0.0-alpha25 => github.com/gecgooden/proxmox-go v0.0.0-20240408123206-6dad45f1d032
+
+replace github.com/k8s-proxmox/proxmox-go v0.0.0-alpha25 => github.com/gecgooden/proxmox-go v0.0.0-20240408134918-ad5841f69db4
 
 require (
 	github.com/go-logr/logr v1.3.0
@@ -129,4 +130,3 @@ require (
 	sigs.k8s.io/structured-merge-diff/v4 v4.2.3 // indirect
 	sigs.k8s.io/yaml v1.3.0 // indirect
 )
-
