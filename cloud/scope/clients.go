@@ -20,8 +20,12 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/go-logr/logr"
+	"github.com/go-logr/zapr"
 	"github.com/k8s-proxmox/proxmox-go/proxmox"
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"sigs.k8s.io/cluster-api/util"
@@ -67,5 +71,23 @@ func newComputeService(ctx context.Context, cluster *infrav1.ProxmoxCluster, crC
 		InsecureSkipVerify: true,
 	}
 	param := proxmox.NewParams(serverRef.Endpoint, authConfig, clientConfig)
-	return proxmox.GetOrCreateService(param)
+	service, err := proxmox.GetOrCreateService(param)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get or create service: %w", err)
+	}
+	var log logr.Logger
+
+	// Configure logging level to the most verbose
+	config := zap.NewDevelopmentConfig()
+	config.Level = zap.NewAtomicLevelAt(zapcore.DebugLevel) // Set the level to Debug
+
+	// Create logger
+	logger, err := config.Build()
+	if err != nil {
+		panic("failed to initialize zap logger: " + err.Error())
+	}
+	defer logger.Sync()
+	log = zapr.NewLogger(logger)
+	service.RESTClient().SetLogger(log)
+	return service, nil
 }
