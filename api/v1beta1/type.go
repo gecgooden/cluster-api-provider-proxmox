@@ -61,7 +61,7 @@ type Hardware struct {
 	// amount of RAM for the VM in MiB : 16 ~
 	// +kubebuilder:validation:Minimum:=16
 	// +kubebuilder:default:=4096
-	Memory int `json:"memory,omitempty"`
+	Memory int `json:"memory,string,omitempty"`
 
 	// number of CPU cores : 1 ~
 	// +kubebuilder:validation:Minimum:=1
