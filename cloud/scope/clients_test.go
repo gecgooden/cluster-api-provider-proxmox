@@ -60,7 +60,7 @@ var _ = Describe("newComputeService", Label("unit", "scope"), func() {
 
 		It("Should return proper error", func() {
 			svc, err := newComputeService(context.TODO(), cluster, k8sClient)
-			Expect(err.Error()).To(Equal("failed to get or create service: invalid authentication config"))
+			Expect(err.Error()).To(Equal("invalid authentication config"))
 			Expect(svc).To(BeNil())
 		})
 	})

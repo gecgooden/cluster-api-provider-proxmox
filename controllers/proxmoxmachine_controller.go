@@ -57,7 +57,6 @@ type ProxmoxMachineReconciler struct {
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.14.4/pkg/reconcile
 func (r *ProxmoxMachineReconciler) Reconcile(ctx context.Context, req ctrl.Request) (_ ctrl.Result, reterr error) {
 	log := log.FromContext(ctx)
-	log.Info("Starting reconcile loop")
 	proxmoxMachine := &infrav1.ProxmoxMachine{}
 	err := r.Get(ctx, req.NamespacedName, proxmoxMachine)
 	if err != nil {
@@ -68,7 +67,6 @@ func (r *ProxmoxMachineReconciler) Reconcile(ctx context.Context, req ctrl.Reque
 		return ctrl.Result{}, err
 	}
 
-	log.Info("Getting owner maching")
 	machine, err := util.GetOwnerMachine(ctx, r.Client, proxmoxMachine.ObjectMeta)
 	if err != nil {
 		return ctrl.Result{}, err

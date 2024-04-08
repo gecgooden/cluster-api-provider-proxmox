@@ -67,9 +67,5 @@ func newComputeService(ctx context.Context, cluster *infrav1.ProxmoxCluster, crC
 		InsecureSkipVerify: true,
 	}
 	param := proxmox.NewParams(serverRef.Endpoint, authConfig, clientConfig)
-	service, err := proxmox.GetOrCreateService(param)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get or create service: %w", err)
-	}
-	return service, nil
+	return proxmox.GetOrCreateService(param)
 }
