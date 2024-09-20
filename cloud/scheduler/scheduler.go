@@ -289,6 +289,7 @@ func (s *Scheduler) SelectNode(ctx context.Context, config api.VirtualMachineCre
 
 	// score
 	scorelist, status := s.RunScorePlugins(ctx, &state, config, nodelist)
+	s.logger.Info("Scores Calculated", "scorelist", scorelist, "status", status)
 	if !status.IsSuccess() {
 		s.logger.Error(status.Error(), "scoring failed")
 	}
@@ -350,7 +351,11 @@ func (s *Scheduler) RunScorePlugins(ctx context.Context, state *framework.CycleS
 	}
 	for index, nodeInfo := range nodeInfos {
 		for _, pl := range s.registry.ScorePlugins() {
+			s.logger.Info("scoring for node with plugin", "node", nodeInfo.Node().ID, "plugin", pl.Name())
+			s.logger.Info("extra node info", "cpu", nodeInfo.Node().Cpu, "maxCPU", nodeInfo.Node().MaxCpu, "mem", nodeInfo.Node().Mem, "maxMem", nodeInfo.Node().MaxMem)
+			s.logger.Info("node resource score", "score", int64(1/nodeInfo.Node().Cpu/float32(nodeInfo.Node().MaxCpu)*float32(nodeInfo.Node().Mem/nodeInfo.Node().MaxMem)))
 			score, status := pl.Score(ctx, state, config, nodeInfo)
+			s.logger.Info("scored for node", "node", nodeInfo.Node().ID, "plugin", pl.Name(), "score", score, "status", status, "code", status.Code())
 			if !status.IsSuccess() {
 				return nil, status
 			}
